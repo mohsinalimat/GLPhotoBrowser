@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'GLPhotoBrowser_Example', :exclusive => true do
+  pod 'GLPhotoBrowser', :path => '../'
+end
+
+target 'GLPhotoBrowser_Tests', :exclusive => true do
+  pod 'GLPhotoBrowser', :path => '../'
+
+  
+end
