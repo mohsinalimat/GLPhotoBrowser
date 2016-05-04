@@ -1,42 +1,19 @@
-#
-# Be sure to run `pod lib lint GLPhotoBrowser.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = "GLPhotoBrowser"
-  s.version          = "0.1.0"
-  s.summary          = "A short description of GLPhotoBrowser."
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+  s.version          = "1.0.0"
+  s.summary          = "A iOS photo browser like wechat"
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+                        GLPhotoBrowser is a iOS photo browser like wechat
                        DESC
 
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/GLPhotoBrowser"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.homepage         = "https://github.com/gaoli/GLPhotoBrowser"
   s.license          = 'MIT'
-  s.author           = { "高力" => "3071730@qq.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/GLPhotoBrowser.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = { "gaoli" => "3071730@qq.com" }
+  s.source           = { :git => "https://github.com/gaoli/GLPhotoBrowser.git", :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.platform     = :ios, '7.0'
+  s.requires_arc = true
 
   s.source_files = 'GLPhotoBrowser/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'GLPhotoBrowser' => ['GLPhotoBrowser/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
