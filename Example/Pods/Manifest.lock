@@ -1,0 +1,14 @@
+PODS:
+  - GLPhotoBrowser (1.0.0)
+
+DEPENDENCIES:
+  - GLPhotoBrowser (from `../`)
+
+EXTERNAL SOURCES:
+  GLPhotoBrowser:
+    :path: ../
+
+SPEC CHECKSUMS:
+  GLPhotoBrowser: 10c4e1616cf8f3ff9de16c8eb1737101ea6c461c
+
+COCOAPODS: 0.35.0

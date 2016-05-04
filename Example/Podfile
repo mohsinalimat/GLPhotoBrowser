@@ -1,4 +1,4 @@
-use_frameworks!
+# use_frameworks!
 
 target 'GLPhotoBrowser_Example', :exclusive => true do
   pod 'GLPhotoBrowser', :path => '../'
