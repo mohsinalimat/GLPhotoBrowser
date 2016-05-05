@@ -15,5 +15,13 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.requires_arc = true
 
-  s.source_files = 'GLPhotoBrowser/Classes/**/*'
+  s.source_files = 'GLPhotoBrowser/Classes/*.{h,m}'
+
+  s.default_subspec = 'View'
+
+  s.subspec 'View' do |view|
+
+    view.source_files = 'GLPhotoBrowser/Classes/View/*.{h,m}'
+
+  end
 end
