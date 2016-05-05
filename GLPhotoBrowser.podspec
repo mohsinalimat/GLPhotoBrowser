@@ -17,7 +17,13 @@ Pod::Spec.new do |s|
 
   s.source_files = 'GLPhotoBrowser/Classes/*.{h,m}'
 
-  s.default_subspec = 'View'
+  s.default_subspec = 'Model', 'View'
+
+  s.subspec 'Model' do |model|
+
+    model.source_files = 'GLPhotoBrowser/Classes/Model/*.{h,m}'
+
+  end
 
   s.subspec 'View' do |view|
 
