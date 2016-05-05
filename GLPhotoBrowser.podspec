@@ -29,5 +29,7 @@ Pod::Spec.new do |s|
 
     view.source_files = 'GLPhotoBrowser/Classes/View/*.{h,m}'
 
+    view.dependency 'SDWebImage', '~> 3.7'
+
   end
 end
