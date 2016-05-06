@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'GLPhotoBrowser/Classes/*.{h,m}'
 
-  s.default_subspec = 'Model', 'View'
+  s.default_subspec = 'Model', 'View', 'ViewModel'
 
   s.subspec 'Model' do |model|
 
@@ -30,6 +30,12 @@ Pod::Spec.new do |s|
     view.source_files = 'GLPhotoBrowser/Classes/View/*.{h,m}'
 
     view.dependency 'SDWebImage', '~> 3.7'
+
+  end
+
+  s.subspec 'ViewModel' do |viewModel|
+
+    viewModel.source_files = 'GLPhotoBrowser/Classes/ViewModel/*.{h,m}'
 
   end
 end
