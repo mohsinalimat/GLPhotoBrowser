@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class GLPhotoBrowserViewModel;
+
 @interface GLPhotoBrowserViewController : UIViewController
+
+@property (nonatomic, strong) GLPhotoBrowserViewModel *viewModel;
 
 @end

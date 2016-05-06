@@ -10,4 +10,6 @@
 
 @interface GLPhotoDO : NSObject
 
+@property (nonatomic, strong) NSString *url;
+
 @end

@@ -7,31 +7,191 @@
 //
 
 #import "GLPhotoBrowserViewController.h"
+#import "GLPhotoView.h"
+#import "GLPhotoScrollView.h"
+#import "GLPhotoBrowserViewModel.h"
+#import "FBKVOController.h"
 
-@interface GLPhotoBrowserViewController ()
+#define SCREEN_W [UIScreen mainScreen].bounds.size.width
+#define SCREEN_H [UIScreen mainScreen].bounds.size.height
+
+static CGFloat const kPhotoSpacingWidth = 20.0f;
+
+@interface GLPhotoBrowserViewController () <UIScrollViewDelegate>
+
+@property (nonatomic, strong) NSMutableArray    *photoViews;
+@property (nonatomic, strong) GLPhotoScrollView *scrollView;
+@property (nonatomic, strong) FBKVOController   *KVOController;
 
 @end
 
 @implementation GLPhotoBrowserViewController
 
+- (id)init {
+    self = [super init];
+    
+    if (self) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    
+    return self;
+}
+
+- (void)loadView {
+    [super loadView];
+    
+    [self.view addSubview:self.scrollView];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    [self.KVOController observe:self.viewModel
+                        keyPath:@"index"
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(GLPhotoBrowserViewController *photoBrowser, GLPhotoBrowserViewModel *viewModel, NSDictionary *change) {
+                              if (viewModel.count == 0) {
+                                  return;
+                              }
+                              
+                              [photoBrowser loadPhoto:viewModel.index];
+                              [photoBrowser loadPhoto:viewModel.index + 1];
+                              [photoBrowser loadPhoto:viewModel.index - 1];
+                              
+                              [photoBrowser unloadPhoto:viewModel.index + 2];
+                              [photoBrowser unloadPhoto:viewModel.index - 2];
+                          }];
+    
+    [self.KVOController observe:self.viewModel
+                        keyPath:@"count"
+                        options:NSKeyValueObservingOptionInitial
+                          block:^(GLPhotoBrowserViewController *photoBrowser, GLPhotoBrowserViewModel *viewModel, NSDictionary *change) {
+                              if (viewModel.count == 0) {
+                                  return;
+                              }
+                              
+                              CGSize size = {(SCREEN_W + kPhotoSpacingWidth) * viewModel.count, SCREEN_H};
+                              
+                              photoBrowser.scrollView.contentSize = size;
+                          }];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // 隐藏顶部导航栏
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    // 显示顶部导航栏
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
-*/
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    NSInteger index = self.scrollView.contentOffset.x / (SCREEN_W + kPhotoSpacingWidth);
+    
+    if (index < 0 || index >= self.viewModel.count) {
+        return;
+    }
+    
+    if (index != self.viewModel.index) {
+        
+        // 重置缩放比例
+        [self resetZoomScale:self.viewModel.index];
+        
+        // 设置当前索引
+        self.viewModel.index = index;
+    }
+}
+
+#pragma mark - private methods
+
+- (void)loadPhoto:(NSInteger)index {
+    if (index < 0 || index >= self.viewModel.count) {
+        return;
+    }
+    
+    id photoView = [self.photoViews objectAtIndex:index];
+    
+    if (![photoView isKindOfClass:[GLPhotoView class]]) {
+        GLPhotoView *photoView = [[GLPhotoView alloc] init];
+        
+        CGRect frame = {{SCREEN_W * index + kPhotoSpacingWidth * (index + 1), 0.0f}, {SCREEN_W, SCREEN_H}};
+        
+        [photoView setFrame:frame];
+        [photoView bindData:self.viewModel.photoDOs[index]];
+        
+        [self.scrollView addSubview:photoView];
+        [self.photoViews replaceObjectAtIndex:index withObject:photoView];
+    }
+}
+
+- (void)unloadPhoto:(NSInteger)index {
+    if (index < 0 || index >= self.viewModel.count) {
+        return;
+    }
+    
+    id photoView = [self.photoViews objectAtIndex:index];
+    
+    if ([photoView isKindOfClass:[GLPhotoView class]]) {
+        [photoView removeFromSuperview];
+        [self.photoViews replaceObjectAtIndex:index withObject:[NSNull null]];
+    }
+}
+
+- (void)resetZoomScale:(NSInteger)index {
+    if (index < 0 || index >= self.viewModel.count) {
+        return;
+    }
+    
+    id photoView = [self.photoViews objectAtIndex:index];
+    
+    if ([photoView isKindOfClass:[GLPhotoView class]]) {
+        [photoView setZoomScale:[photoView minimumZoomScale] animated:YES];
+    }
+}
+
+#pragma mark - getters and setters
+
+- (NSMutableArray *)photoViews {
+    if (_photoViews == nil) {
+        _photoViews = [NSMutableArray array];
+        
+        for (int i = 0; i < self.viewModel.count; i++) {
+            [_photoViews addObject:[NSNull null]];
+        }
+    }
+    
+    return _photoViews;
+}
+
+- (GLPhotoScrollView *)scrollView {
+    if (_scrollView == nil) {
+        _scrollView = [[GLPhotoScrollView alloc] init];
+        
+        CGRect frame = {{-kPhotoSpacingWidth, 0.0f}, {SCREEN_W + kPhotoSpacingWidth, SCREEN_H}};
+        
+        _scrollView.frame                          = frame;
+        _scrollView.delegate                       = self;
+        _scrollView.pagingEnabled                  = YES;
+        _scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView.showsVerticalScrollIndicator   = NO;
+    }
+    
+    return _scrollView;
+}
+
+- (FBKVOController *)KVOController {
+    if (_KVOController == nil) {
+        _KVOController = [FBKVOController controllerWithObserver:self];
+    }
+    
+    return _KVOController;
+}
 
 @end

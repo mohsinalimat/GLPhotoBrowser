@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class GLPhotoDO;
+
 @interface GLPhotoView : UIScrollView
+
+@property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
+
+- (void)bindData:(GLPhotoDO *)data;
 
 @end
