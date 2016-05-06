@@ -19,6 +19,9 @@ Pod::Spec.new do |s|
 
   s.default_subspec = 'Model', 'View', 'ViewModel'
 
+  s.dependency 'SDWebImage',    '~> 3.7'
+  s.dependency 'KVOController', '~> 1.1'
+
   s.subspec 'Model' do |model|
 
     model.source_files = 'GLPhotoBrowser/Classes/Model/*.{h,m}'
@@ -28,8 +31,6 @@ Pod::Spec.new do |s|
   s.subspec 'View' do |view|
 
     view.source_files = 'GLPhotoBrowser/Classes/View/*.{h,m}'
-
-    view.dependency 'SDWebImage', '~> 3.7'
 
   end
 
