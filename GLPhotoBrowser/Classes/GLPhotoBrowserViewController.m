@@ -54,12 +54,11 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
                                   return;
                               }
                               
-                              [photoBrowser loadPhoto:viewModel.index];
-                              [photoBrowser loadPhoto:viewModel.index + 1];
-                              [photoBrowser loadPhoto:viewModel.index - 1];
+                              [photoBrowser switchPhoto:viewModel.index];
                               
-                              [photoBrowser unloadPhoto:viewModel.index + 2];
-                              [photoBrowser unloadPhoto:viewModel.index - 2];
+                              CGPoint point = {(SCREEN_W + kPhotoSpacingWidth) * viewModel.index, 0.0f};
+                              
+                              photoBrowser.scrollView.contentOffset = point;
                           }];
     
     [self.KVOController observe:self.viewModel
@@ -142,6 +141,14 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
         [photoView removeFromSuperview];
         [self.photoViews replaceObjectAtIndex:index withObject:[NSNull null]];
     }
+}
+
+- (void)switchPhoto:(NSInteger)index {
+    [self loadPhoto  :index];
+    [self loadPhoto  :index + 1];
+    [self loadPhoto  :index - 1];
+    [self unloadPhoto:index + 2];
+    [self unloadPhoto:index - 2];
 }
 
 - (void)resetZoomScale:(NSInteger)index {
