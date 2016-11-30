@@ -6,6 +6,4 @@ end
 
 target 'GLPhotoBrowser_Tests', :exclusive => true do
   pod 'GLPhotoBrowser', :path => '../'
-
-  
 end

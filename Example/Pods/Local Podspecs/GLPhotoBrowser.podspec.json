@@ -1,0 +1,47 @@
+{
+  "name": "GLPhotoBrowser",
+  "version": "1.0.0",
+  "summary": "A iOS photo browser like wechat",
+  "description": "GLPhotoBrowser is a iOS photo browser like wechat",
+  "homepage": "https://github.com/gaoli/GLPhotoBrowser",
+  "license": "MIT",
+  "authors": {
+    "gaoli": "3071730@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/gaoli/GLPhotoBrowser.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "requires_arc": true,
+  "source_files": "GLPhotoBrowser/Classes/*.{h,m}",
+  "default_subspecs": [
+    "Model",
+    "View",
+    "ViewModel"
+  ],
+  "dependencies": {
+    "SDWebImage": [
+      "3.8.2"
+    ],
+    "KVOController": [
+      "1.2.0"
+    ]
+  },
+  "subspecs": [
+    {
+      "name": "Model",
+      "source_files": "GLPhotoBrowser/Classes/Model/*.{h,m}"
+    },
+    {
+      "name": "View",
+      "source_files": "GLPhotoBrowser/Classes/View/*.{h,m}"
+    },
+    {
+      "name": "ViewModel",
+      "source_files": "GLPhotoBrowser/Classes/ViewModel/*.{h,m}"
+    }
+  ]
+}
