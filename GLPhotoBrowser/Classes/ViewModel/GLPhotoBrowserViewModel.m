@@ -2,7 +2,7 @@
 //  GLPhotoBrowserViewModel.m
 //  Pods
 //
-//  Created by 高力 on 16/5/6.
+//  Created by gaoli on 16/5/6.
 //
 //
 
