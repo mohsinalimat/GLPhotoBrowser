@@ -19,8 +19,8 @@ Pod::Spec.new do |s|
 
   s.default_subspec = 'Model', 'View', 'ViewModel'
 
-  s.dependency 'SDWebImage',    '~> 3.7'
-  s.dependency 'KVOController', '~> 1.1'
+  s.dependency 'SDWebImage',    '3.8.2'
+  s.dependency 'KVOController', '1.2.0'
 
   s.subspec 'Model' do |model|
 
