@@ -163,6 +163,39 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
     }
 }
 
+- (void)showPhotoBrowser {
+    UIImageView *thumbnail     = [self.viewModel thumbnailAtIndex:self.viewModel.index];
+    CGRect       thumbnailRect = thumbnail.bounds;
+    
+    UIImageView *tempThumbnail     = [[UIImageView alloc] init];
+    CGRect       tempThumbnailRect = [thumbnail convertRect:thumbnailRect toView:nil];
+    
+    tempThumbnail.frame         = tempThumbnailRect;
+    tempThumbnail.image         = thumbnail.image;
+    tempThumbnail.contentMode   = UIViewContentModeScaleAspectFill;
+    tempThumbnail.clipsToBounds = YES;
+    
+    [self.view addSubview:tempThumbnail];
+    
+    [UIView animateWithDuration:0.25f
+                     animations:^{
+                         CGFloat tempThumbnailImageW = tempThumbnail.image.size.width;
+                         CGFloat tempThumbnailImageH = tempThumbnail.image.size.height;
+                         CGFloat tempThumbnailW      = SCREEN_W;
+                         CGFloat tempThumbnailH      = (tempThumbnailImageH / tempThumbnailImageW) * SCREEN_W;
+                         
+                         if (tempThumbnailH > SCREEN_H) {
+                             tempThumbnail.frame = CGRectMake(0.0f, 0.0f, tempThumbnailW, tempThumbnailH);
+                         } else {
+                             tempThumbnail.frame = CGRectMake(0.0f, (SCREEN_H - tempThumbnailH) / 2, tempThumbnailW, tempThumbnailH);
+                         }
+                     } completion:^(BOOL finished) {
+                         self.scrollView.hidden = NO;
+                         
+                         [tempThumbnail removeFromSuperview];
+                     }];
+}
+
 #pragma mark - getters and setters
 
 - (NSMutableArray *)photoViews {
@@ -183,6 +216,7 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
         
         CGRect frame = {{-kPhotoSpacingWidth, 0.0f}, {SCREEN_W + kPhotoSpacingWidth, SCREEN_H}};
         
+        _scrollView.hidden                         = YES;
         _scrollView.frame                          = frame;
         _scrollView.delegate                       = self;
         _scrollView.pagingEnabled                  = YES;
