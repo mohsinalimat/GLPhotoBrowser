@@ -22,4 +22,10 @@
     return self;
 }
 
+- (UIImageView *)thumbnailAtIndex:(NSInteger)index {
+    GLPhotoDO *photoDO = [self.photoDOs objectAtIndex:index];
+    
+    return photoDO.thumbnail;
+}
+
 @end

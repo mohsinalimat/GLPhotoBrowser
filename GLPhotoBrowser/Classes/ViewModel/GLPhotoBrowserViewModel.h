@@ -17,4 +17,6 @@
 
 - (id)initWithData:(NSMutableArray *)photoDOs index:(NSInteger)index;
 
+- (UIImageView *)thumbnailAtIndex:(NSInteger)index;
+
 @end
