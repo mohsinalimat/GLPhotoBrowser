@@ -15,8 +15,10 @@
 
 @interface GLPhotoView () <UIScrollViewDelegate>
 
-@property (nonatomic, assign) CGFloat      zoomScale;
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, assign) CGFloat                 zoomScale;
+@property (nonatomic, strong) UIImageView            *imageView;
+@property (nonatomic, strong) UITapGestureRecognizer *singleTapGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
 
 @end
 
@@ -50,6 +52,7 @@
                                  [self setZoomScale:self.minimumZoomScale animated:NO];
                                  
                                  // 添加手势响应
+                                 [self addGestureRecognizer:self.singleTapGestureRecognizer];
                                  [self addGestureRecognizer:self.doubleTapGestureRecognizer];
                              }];
 }
@@ -70,9 +73,15 @@
 
 #pragma mark - event response
 
-- (void)handleDoubleTapGesture:(UITapGestureRecognizer *)doubleTapGestureRecognizer {
+- (void)handleSingleTap:(UITapGestureRecognizer *)sender {
+    if (self.singleTapBlock) {
+        self.singleTapBlock(sender);
+    }
+}
+
+- (void)handleDoubleTap:(UITapGestureRecognizer *)sender {
     CGFloat scale;
-    CGPoint center = [doubleTapGestureRecognizer locationInView:self.imageView];
+    CGPoint center = [sender locationInView:self.imageView];
     
     if (self.zoomScale == 0.0f || self.zoomScale == self.minimumZoomScale) {
         scale = self.maximumZoomScale;
@@ -157,9 +166,19 @@
     return _imageView;
 }
 
+- (UITapGestureRecognizer *)singleTapGestureRecognizer {
+    if (_singleTapGestureRecognizer == nil) {
+        _singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+        
+        [_singleTapGestureRecognizer requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
+    }
+    
+    return _singleTapGestureRecognizer;
+}
+
 - (UITapGestureRecognizer *)doubleTapGestureRecognizer {
     if (_doubleTapGestureRecognizer == nil) {
-        _doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTapGesture:)];
+        _doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
         
         _doubleTapGestureRecognizer.numberOfTapsRequired = 2;
     }
