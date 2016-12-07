@@ -16,7 +16,6 @@
 @interface GLPhotoView () <UIScrollViewDelegate>
 
 @property (nonatomic, assign) CGFloat                 zoomScale;
-@property (nonatomic, strong) UIImageView            *imageView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
 

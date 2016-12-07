@@ -12,6 +12,7 @@
 
 @interface GLPhotoView : UIScrollView
 
+@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) void (^singleTapBlock)(UITapGestureRecognizer *sender);
 
 - (void)bindData:(GLPhotoDO *)data;

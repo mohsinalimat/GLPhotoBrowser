@@ -21,6 +21,7 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
 
 @property (nonatomic, strong) NSMutableArray    *photoViews;
 @property (nonatomic, strong) GLPhotoScrollView *scrollView;
+@property (nonatomic, strong) NSMutableArray    *convertedRect;
 @property (nonatomic, strong) FBKVOController   *KVOController;
 
 @end
@@ -73,6 +74,8 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
                               
                               photoBrowser.scrollView.contentSize = size;
                           }];
+    
+    [self convertThumbnailRect];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,6 +83,12 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
     
     // 隐藏顶部导航栏
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self showPhotoBrowser];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -110,6 +119,18 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
 
 #pragma mark - private methods
 
+- (UIImageView *)thumbnailAtIndex:(NSInteger)index {
+    GLPhotoDO *photoDO = [self.viewModel.photoDOs objectAtIndex:index];
+    
+    return photoDO.thumbnail;
+}
+
+- (CGRect)thumbnailRectAtIndex:(NSInteger)index {
+    NSValue *thumbnailRect = [self.convertedRect objectAtIndex:index];
+    
+    return thumbnailRect.CGRectValue;
+}
+
 - (void)loadPhoto:(NSInteger)index {
     if (index < 0 || index >= self.viewModel.count) {
         return;
@@ -124,6 +145,14 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
         
         [photoView setFrame:frame];
         [photoView bindData:self.viewModel.photoDOs[index]];
+        
+        __weak __typeof(self) weakSelf = self;
+        
+        photoView.singleTapBlock = ^(UITapGestureRecognizer *sender) {
+            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            
+            [strongSelf hidePhotoBrowser];
+        };
         
         [self.scrollView addSubview:photoView];
         [self.photoViews replaceObjectAtIndex:index withObject:photoView];
@@ -163,14 +192,22 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
     }
 }
 
+- (void)convertThumbnailRect {
+    for (NSInteger index = 0; index < self.viewModel.count; index++) {
+        UIImageView *thumbnail     = [self thumbnailAtIndex:index];
+        CGRect       thumbnailRect = [thumbnail convertRect:thumbnail.bounds toView:nil];
+        
+        [self.convertedRect addObject:[NSValue valueWithCGRect:thumbnailRect]];
+    }
+}
+
 - (void)showPhotoBrowser {
-    UIImageView *thumbnail     = [self.viewModel thumbnailAtIndex:self.viewModel.index];
-    CGRect       thumbnailRect = thumbnail.bounds;
+    UIImageView *thumbnail     = [self thumbnailAtIndex    :self.viewModel.index];
+    CGRect       thumbnailRect = [self thumbnailRectAtIndex:self.viewModel.index];
     
-    UIImageView *tempThumbnail     = [[UIImageView alloc] init];
-    CGRect       tempThumbnailRect = [thumbnail convertRect:thumbnailRect toView:nil];
+    UIImageView *tempThumbnail = [[UIImageView alloc] init];
     
-    tempThumbnail.frame         = tempThumbnailRect;
+    tempThumbnail.frame         = thumbnailRect;
     tempThumbnail.image         = thumbnail.image;
     tempThumbnail.contentMode   = UIViewContentModeScaleAspectFill;
     tempThumbnail.clipsToBounds = YES;
@@ -196,7 +233,48 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
                      }];
 }
 
+- (void)hidePhotoBrowser {
+    [self resetZoomScale:self.viewModel.index];
+    
+    GLPhotoView *photoView     = [self.photoViews objectAtIndex:self.viewModel.index];
+    UIImageView *tempThumbnail = [[UIImageView alloc] init];
+    
+    tempThumbnail.image         = photoView.imageView.image;
+    tempThumbnail.contentMode   = UIViewContentModeScaleAspectFill;
+    tempThumbnail.clipsToBounds = YES;
+    
+    CGFloat tempThumbnailImageW = photoView.imageView.image.size.width;
+    CGFloat tempThumbnailImageH = photoView.imageView.image.size.height;
+    CGFloat tempThumbnailW      = SCREEN_W;
+    CGFloat tempThumbnailH      = (tempThumbnailImageH / tempThumbnailImageW) * SCREEN_W;
+    
+    if (tempThumbnailH > SCREEN_H) {
+        tempThumbnail.frame = CGRectMake(0.0f, 0.0f, tempThumbnailW, tempThumbnailH);
+    } else {
+        tempThumbnail.frame = CGRectMake(0.0f, (SCREEN_H - tempThumbnailH) / 2, tempThumbnailW, tempThumbnailH);
+    }
+    
+    [self.view addSubview:tempThumbnail];
+    
+    self.scrollView.hidden = YES;
+    
+    [UIView animateWithDuration:0.25f
+                     animations:^{
+                         tempThumbnail.frame = [self thumbnailRectAtIndex:self.viewModel.index];
+                     } completion:^(BOOL finished) {
+                         [self.navigationController popViewControllerAnimated:NO];
+                     }];
+}
+
 #pragma mark - getters and setters
+
+- (NSMutableArray *)convertedRect {
+    if (_convertedRect == nil) {
+        _convertedRect = [NSMutableArray array];
+    }
+    
+    return _convertedRect;
+}
 
 - (NSMutableArray *)photoViews {
     if (_photoViews == nil) {
