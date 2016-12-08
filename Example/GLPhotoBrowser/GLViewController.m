@@ -63,7 +63,7 @@
     GLCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GLCollectionViewCell" forIndexPath:indexPath];
     
     if (cell) {
-        cell.tag = indexPath.row;
+        cell.thumbnail.tag = 1000 + indexPath.row;
         
         [cell.thumbnail sd_setImageWithURL:[NSURL URLWithString:self.middleUrlArray[indexPath.row]]];
     }
@@ -91,7 +91,7 @@
         GLPhotoDO *photoDO = [[GLPhotoDO alloc] init];
         
         photoDO.url       = urlArray[i];
-        photoDO.thumbnail = [self.view viewWithTag:i];
+        photoDO.thumbnail = [self.view viewWithTag:1000 + i];
         
         [photoDOs addObject:photoDO];
     }
@@ -101,7 +101,7 @@
     
     photoBrowserViewController.viewModel = photoBrowserViewModel;
     
-    [self.navigationController pushViewController:photoBrowserViewController animated:NO];
+    [self.navigationController presentViewController:photoBrowserViewController animated:NO completion:nil];
 }
 
 #pragma mark - getters and setters
