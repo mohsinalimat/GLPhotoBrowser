@@ -32,6 +32,8 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
     self = [super init];
     
     if (self) {
+        self.modalTransitionStyle                 = UIModalTransitionStyleCrossDissolve;
+        self.modalPresentationStyle               = UIModalPresentationOverCurrentContext;
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
@@ -46,6 +48,8 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor blackColor];
     
     [self.KVOController observe:self.viewModel
                         keyPath:@"index"
@@ -81,7 +85,6 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // 隐藏顶部导航栏
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
@@ -94,7 +97,6 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    // 显示顶部导航栏
     [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
@@ -236,6 +238,8 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
 - (void)hidePhotoBrowser {
     [self resetZoomScale:self.viewModel.index];
     
+    self.view.backgroundColor = [UIColor clearColor];
+    
     GLPhotoView *photoView     = [self.photoViews objectAtIndex:self.viewModel.index];
     UIImageView *tempThumbnail = [[UIImageView alloc] init];
     
@@ -262,7 +266,7 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
                      animations:^{
                          tempThumbnail.frame = [self thumbnailRectAtIndex:self.viewModel.index];
                      } completion:^(BOOL finished) {
-                         [self.navigationController popViewControllerAnimated:NO];
+                         [self dismissViewControllerAnimated:NO completion:nil];
                      }];
 }
 
