@@ -8,6 +8,7 @@
 
 #import "GLPhotoView.h"
 #import "GLPhotoDO.h"
+#import "GLCycleView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #define SCREEN_W [UIScreen mainScreen].bounds.size.width
@@ -16,6 +17,7 @@
 @interface GLPhotoView () <UIScrollViewDelegate>
 
 @property (nonatomic, assign) CGFloat                 zoomScale;
+@property (nonatomic, strong) GLCycleView            *cycleView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
 
@@ -32,27 +34,45 @@
         self.showsVerticalScrollIndicator   = NO;
         
         [self addSubview:self.imageView];
+        [self addSubview:self.cycleView];
     }
     
     return self;
 }
 
 - (void)bindData:(GLPhotoDO *)data {
+    __weak __typeof(self) weakSelf = self;
+    
     [self.imageView sd_setImageWithURL:[NSURL URLWithString:data.url]
+                      placeholderImage:nil
+                               options:0
+                              progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                  __strong __typeof(weakSelf) strongSelf = weakSelf;
+                                  
+                                  CGFloat progress = (CGFloat)receivedSize / (CGFloat)expectedSize;
+                                  
+                                  strongSelf.cycleView.hidden   = NO;
+                                  strongSelf.cycleView.progress = progress;
+                                  
+                                  if (progress == 1.0f) {
+                                      strongSelf.cycleView.hidden = YES;
+                                  }
+                              }
                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                 __strong __typeof(weakSelf) strongSelf = weakSelf;
                                  
                                  // 设置图片布局
-                                 [self setImageFrame];
+                                 [strongSelf setImageFrame];
                                  
                                  // 设置缩放比例
-                                 [self setMaxMinZoomScale];
+                                 [strongSelf setMaxMinZoomScale];
                                  
                                  // 缩至最小比例
-                                 [self setZoomScale:self.minimumZoomScale animated:NO];
+                                 [strongSelf setZoomScale:strongSelf.minimumZoomScale animated:NO];
                                  
                                  // 添加手势响应
-                                 [self addGestureRecognizer:self.singleTapGestureRecognizer];
-                                 [self addGestureRecognizer:self.doubleTapGestureRecognizer];
+                                 [strongSelf addGestureRecognizer:strongSelf.singleTapGestureRecognizer];
+                                 [strongSelf addGestureRecognizer:strongSelf.doubleTapGestureRecognizer];
                              }];
 }
 
@@ -163,6 +183,19 @@
     }
     
     return _imageView;
+}
+
+- (GLCycleView *)cycleView {
+    if (_cycleView == nil) {
+        _cycleView = [[GLCycleView alloc] init];
+        
+        CGRect frame = {{(SCREEN_W - 20.0f) / 2, (SCREEN_H - 20.0f) / 2}, {20.0f, 20.0f}};
+        
+        _cycleView.frame  = frame;
+        _cycleView.hidden = YES;
+    }
+    
+    return _cycleView;
 }
 
 - (UITapGestureRecognizer *)singleTapGestureRecognizer {
