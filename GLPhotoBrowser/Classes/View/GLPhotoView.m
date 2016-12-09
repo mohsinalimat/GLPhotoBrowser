@@ -44,7 +44,7 @@
     __weak __typeof(self) weakSelf = self;
     
     [self.imageView sd_setImageWithURL:[NSURL URLWithString:data.url]
-                      placeholderImage:nil
+                      placeholderImage:data.thumbnail.image
                                options:0
                               progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                                   __strong __typeof(weakSelf) strongSelf = weakSelf;
@@ -61,8 +61,7 @@
                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                  __strong __typeof(weakSelf) strongSelf = weakSelf;
                                  
-                                 // 设置图片布局
-                                 [strongSelf setImageFrame];
+                                 weakSelf.imageView.frame = CGRectMake(0.0f, 0.0f, image.size.width, image.size.height);
                                  
                                  // 设置缩放比例
                                  [strongSelf setMaxMinZoomScale];
@@ -74,6 +73,21 @@
                                  [strongSelf addGestureRecognizer:strongSelf.singleTapGestureRecognizer];
                                  [strongSelf addGestureRecognizer:strongSelf.doubleTapGestureRecognizer];
                              }];
+    
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    
+    if ([imageCache diskImageExistsWithKey:data.url] == NO) {
+        CGFloat imageW     = self.imageView.image.size.width;
+        CGFloat imageH     = self.imageView.image.size.height;
+        CGFloat imageViewW = SCREEN_W;
+        CGFloat imageViewH = (imageH / imageW) * SCREEN_W;
+        
+        if (imageH > imageW) {
+            self.imageView.frame = CGRectMake(0.0f, 0.0f, imageViewW, imageViewH);
+        } else {
+            self.imageView.frame = CGRectMake(0.0f, (SCREEN_H - imageViewH) / 2, imageViewW, imageViewH);
+        }
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -112,12 +126,6 @@
 }
 
 #pragma mark - private methods
-
-- (void)setImageFrame {
-    CGSize size = self.imageView.image.size;
-    
-    self.imageView.frame = CGRectMake(0.0f, 0.0f, size.width, size.height);
-}
 
 - (void)setMaxMinZoomScale {
     CGFloat minScale = 1.0f;
@@ -189,9 +197,10 @@
     if (_cycleView == nil) {
         _cycleView = [[GLCycleView alloc] init];
         
-        CGRect frame = {{(SCREEN_W - 20.0f) / 2, (SCREEN_H - 20.0f) / 2}, {20.0f, 20.0f}};
-        
-        _cycleView.frame  = frame;
+        _cycleView.frame  = CGRectMake((SCREEN_W - 20.0f) / 2,
+                                       (SCREEN_H - 20.0f) / 2,
+                                       20.0f,
+                                       20.0f);
         _cycleView.hidden = YES;
     }
     
