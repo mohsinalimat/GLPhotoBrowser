@@ -15,28 +15,8 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.requires_arc = true
 
-  s.source_files = 'GLPhotoBrowser/Classes/*.{h,m}'
-
-  s.default_subspec = 'Model', 'View', 'ViewModel'
+  s.source_files = 'GLPhotoBrowser/Classes/**/*.{h,m}'
 
   s.dependency 'SDWebImage',    '3.8.2'
   s.dependency 'KVOController', '1.2.0'
-
-  s.subspec 'Model' do |model|
-
-    model.source_files = 'GLPhotoBrowser/Classes/Model/*.{h,m}'
-
-  end
-
-  s.subspec 'View' do |view|
-
-    view.source_files = 'GLPhotoBrowser/Classes/View/*.{h,m}'
-
-  end
-
-  s.subspec 'ViewModel' do |viewModel|
-
-    viewModel.source_files = 'GLPhotoBrowser/Classes/ViewModel/*.{h,m}'
-
-  end
 end
