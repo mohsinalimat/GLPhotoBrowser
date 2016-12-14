@@ -10,4 +10,6 @@
 
 @interface GLPhotoBrowser : NSObject
 
+- (void)initWithThumbnails:(NSArray *)thumbnails URLs:(NSArray *)URLs index:(NSInteger)index;
+
 @end
