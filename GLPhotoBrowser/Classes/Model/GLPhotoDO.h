@@ -10,7 +10,7 @@
 
 @interface GLPhotoDO : NSObject
 
-@property (nonatomic, strong) NSString    *url;
+@property (nonatomic, strong) NSURL       *url;
 @property (nonatomic, strong) UIImageView *thumbnail;
 
 @end

@@ -43,7 +43,7 @@
 - (void)bindData:(GLPhotoDO *)data {
     __weak __typeof(self) weakSelf = self;
     
-    [self.imageView sd_setImageWithURL:[NSURL URLWithString:data.url]
+    [self.imageView sd_setImageWithURL:data.url
                       placeholderImage:data.thumbnail.image
                                options:0
                               progress:^(NSInteger receivedSize, NSInteger expectedSize) {
@@ -76,7 +76,7 @@
     
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     
-    if ([imageCache diskImageExistsWithKey:data.url] == NO) {
+    if ([imageCache diskImageExistsWithKey:data.url.absoluteString] == NO) {
         CGFloat imageW     = self.imageView.image.size.width;
         CGFloat imageH     = self.imageView.image.size.height;
         CGFloat imageViewW = SCREEN_W;
