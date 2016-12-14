@@ -21,7 +21,6 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
 
 @property (nonatomic, strong) NSMutableArray    *photoViews;
 @property (nonatomic, strong) GLPhotoScrollView *scrollView;
-@property (nonatomic, strong) NSMutableArray    *convertedRect;
 @property (nonatomic, strong) FBKVOController   *KVOController;
 
 @end
@@ -78,8 +77,6 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
                               
                               photoBrowser.scrollView.contentSize = size;
                           }];
-    
-    [self convertThumbnailRect];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -128,9 +125,9 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
 }
 
 - (CGRect)thumbnailRectAtIndex:(NSInteger)index {
-    NSValue *thumbnailRect = [self.convertedRect objectAtIndex:index];
+    GLPhotoDO *photoDO = [self.viewModel.photoDOs objectAtIndex:index];
     
-    return thumbnailRect.CGRectValue;
+    return [photoDO.thumbnail convertRect:photoDO.thumbnail.bounds toView:nil];
 }
 
 - (void)loadPhoto:(NSInteger)index {
@@ -191,15 +188,6 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
     
     if ([photoView isKindOfClass:[GLPhotoView class]]) {
         [photoView setZoomScale:[photoView minimumZoomScale] animated:YES];
-    }
-}
-
-- (void)convertThumbnailRect {
-    for (NSInteger index = 0; index < self.viewModel.count; index++) {
-        UIImageView *thumbnail     = [self thumbnailAtIndex:index];
-        CGRect       thumbnailRect = [thumbnail convertRect:thumbnail.bounds toView:nil];
-        
-        [self.convertedRect addObject:[NSValue valueWithCGRect:thumbnailRect]];
     }
 }
 
@@ -271,14 +259,6 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
 }
 
 #pragma mark - getters and setters
-
-- (NSMutableArray *)convertedRect {
-    if (_convertedRect == nil) {
-        _convertedRect = [NSMutableArray array];
-    }
-    
-    return _convertedRect;
-}
 
 - (NSMutableArray *)photoViews {
     if (_photoViews == nil) {
