@@ -13,6 +13,12 @@
 @implementation GLPhotoBrowser
 
 - (void)initWithThumbnails:(NSArray *)thumbnails URLs:(NSArray *)URLs index:(NSInteger)index {
+    UIImageView *thumbnail = [thumbnails objectAtIndex:index];
+    
+    if (thumbnail.image == nil) {
+        return;
+    }
+    
     NSMutableArray *photoDOs = [NSMutableArray array];
     
     for (int i = 0; i < thumbnails.count; i++) {

@@ -76,13 +76,16 @@
     
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
     
-    if ([imageCache diskImageExistsWithKey:data.url.absoluteString] == NO) {
+    BOOL isPlaceholderImageExist = self.imageView.image != nil;
+    BOOL isHighQualityImageExist = [imageCache diskImageExistsWithKey:data.url.absoluteString];
+    
+    if (isPlaceholderImageExist && !isHighQualityImageExist) {
         CGFloat imageW     = self.imageView.image.size.width;
         CGFloat imageH     = self.imageView.image.size.height;
         CGFloat imageViewW = SCREEN_W;
         CGFloat imageViewH = (imageH / imageW) * SCREEN_W;
         
-        if (imageH > imageW) {
+        if (imageH > SCREEN_H) {
             self.imageView.frame = CGRectMake(0.0f, 0.0f, imageViewW, imageViewH);
         } else {
             self.imageView.frame = CGRectMake(0.0f, (SCREEN_H - imageViewH) / 2, imageViewW, imageViewH);
