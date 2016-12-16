@@ -16,12 +16,7 @@
     "ios": "7.0"
   },
   "requires_arc": true,
-  "source_files": "GLPhotoBrowser/Classes/*.{h,m}",
-  "default_subspecs": [
-    "Model",
-    "View",
-    "ViewModel"
-  ],
+  "source_files": "GLPhotoBrowser/Classes/**/*.{h,m}",
   "dependencies": {
     "SDWebImage": [
       "3.8.2"
@@ -29,19 +24,5 @@
     "KVOController": [
       "1.2.0"
     ]
-  },
-  "subspecs": [
-    {
-      "name": "Model",
-      "source_files": "GLPhotoBrowser/Classes/Model/*.{h,m}"
-    },
-    {
-      "name": "View",
-      "source_files": "GLPhotoBrowser/Classes/View/*.{h,m}"
-    },
-    {
-      "name": "ViewModel",
-      "source_files": "GLPhotoBrowser/Classes/ViewModel/*.{h,m}"
-    }
-  ]
+  }
 }

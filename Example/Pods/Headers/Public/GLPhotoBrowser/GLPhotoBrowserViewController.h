@@ -1,1 +1,1 @@
-../../../../../GLPhotoBrowser/Classes/GLPhotoBrowserViewController.h
+../../../../../GLPhotoBrowser/Classes/Controller/GLPhotoBrowserViewController.h

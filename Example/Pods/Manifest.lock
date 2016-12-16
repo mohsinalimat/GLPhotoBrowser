@@ -1,17 +1,5 @@
 PODS:
   - GLPhotoBrowser (1.0.0):
-    - GLPhotoBrowser/Model (= 1.0.0)
-    - GLPhotoBrowser/View (= 1.0.0)
-    - GLPhotoBrowser/ViewModel (= 1.0.0)
-    - KVOController (= 1.2.0)
-    - SDWebImage (= 3.8.2)
-  - GLPhotoBrowser/Model (1.0.0):
-    - KVOController (= 1.2.0)
-    - SDWebImage (= 3.8.2)
-  - GLPhotoBrowser/View (1.0.0):
-    - KVOController (= 1.2.0)
-    - SDWebImage (= 3.8.2)
-  - GLPhotoBrowser/ViewModel (1.0.0):
     - KVOController (= 1.2.0)
     - SDWebImage (= 3.8.2)
   - KVOController (1.2.0)
@@ -27,7 +15,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  GLPhotoBrowser: 63cc8888f04e68a2290c1b771f30dc60b8cefa2b
+  GLPhotoBrowser: eee5d2a072114dd8ba5d3b743df3f7d69aed8bf1
   KVOController: accfbac41571fa967baab1a0c3b72eb6902898a1
   SDWebImage: c0f05da80ad848542fb6ea8422621c74079bd5c5
 
