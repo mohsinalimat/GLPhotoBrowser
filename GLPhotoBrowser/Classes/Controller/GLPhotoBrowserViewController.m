@@ -195,67 +195,72 @@ static CGFloat const kPhotoSpacingWidth = 20.0f;
     UIImageView *thumbnail     = [self thumbnailAtIndex    :self.viewModel.index];
     CGRect       thumbnailRect = [self thumbnailRectAtIndex:self.viewModel.index];
     
-    UIImageView *tempThumbnail = [[UIImageView alloc] init];
+    UIImageView *imageView = [[UIImageView alloc] init];
     
-    tempThumbnail.frame         = thumbnailRect;
-    tempThumbnail.image         = thumbnail.image;
-    tempThumbnail.contentMode   = UIViewContentModeScaleAspectFill;
-    tempThumbnail.clipsToBounds = YES;
+    imageView.frame         = thumbnailRect;
+    imageView.image         = thumbnail.image;
+    imageView.contentMode   = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds = YES;
     
-    [self.view addSubview:tempThumbnail];
+    [self.view addSubview:imageView];
     
     [UIView animateWithDuration:0.25f
                      animations:^{
-                         CGFloat tempThumbnailImageW = tempThumbnail.image.size.width;
-                         CGFloat tempThumbnailImageH = tempThumbnail.image.size.height;
-                         CGFloat tempThumbnailW      = SCREEN_W;
-                         CGFloat tempThumbnailH      = (tempThumbnailImageH / tempThumbnailImageW) * SCREEN_W;
+                         CGFloat imageW     = imageView.image.size.width;
+                         CGFloat imageH     = imageView.image.size.height;
+                         CGFloat imageViewW = SCREEN_W;
+                         CGFloat imageViewH = (imageH / imageW) * SCREEN_W;
                          
-                         if (tempThumbnailH > SCREEN_H) {
-                             tempThumbnail.frame = CGRectMake(0.0f, 0.0f, tempThumbnailW, tempThumbnailH);
+                         if (imageViewH > SCREEN_H) {
+                             imageView.frame = CGRectMake(0.0f, 0.0f, imageViewW, imageViewH);
                          } else {
-                             tempThumbnail.frame = CGRectMake(0.0f, (SCREEN_H - tempThumbnailH) / 2, tempThumbnailW, tempThumbnailH);
+                             imageView.frame = CGRectMake(0.0f, (SCREEN_H - imageViewH) / 2, imageViewW, imageViewH);
                          }
                      } completion:^(BOOL finished) {
                          self.scrollView.hidden = NO;
                          
-                         [tempThumbnail removeFromSuperview];
+                         [imageView removeFromSuperview];
                      }];
 }
 
 - (void)hidePhotoBrowser {
-    [self resetZoomScale:self.viewModel.index];
+    GLPhotoView *photoView = [self.photoViews objectAtIndex:self.viewModel.index];
     
-    self.view.backgroundColor = [UIColor clearColor];
-    
-    GLPhotoView *photoView     = [self.photoViews objectAtIndex:self.viewModel.index];
-    UIImageView *tempThumbnail = [[UIImageView alloc] init];
-    
-    tempThumbnail.image         = photoView.imageView.image;
-    tempThumbnail.contentMode   = UIViewContentModeScaleAspectFill;
-    tempThumbnail.clipsToBounds = YES;
-    
-    CGFloat tempThumbnailImageW = photoView.imageView.image.size.width;
-    CGFloat tempThumbnailImageH = photoView.imageView.image.size.height;
-    CGFloat tempThumbnailW      = SCREEN_W;
-    CGFloat tempThumbnailH      = (tempThumbnailImageH / tempThumbnailImageW) * SCREEN_W;
-    
-    if (tempThumbnailH > SCREEN_H) {
-        tempThumbnail.frame = CGRectMake(0.0f, 0.0f, tempThumbnailW, tempThumbnailH);
+    if (photoView.imageView.image) {
+        [self resetZoomScale:self.viewModel.index];
+        
+        self.scrollView.hidden = YES;
+        
+        UIImage     *image     = photoView.imageView.image;
+        UIImageView *imageView = [[UIImageView alloc] init];
+        
+        imageView.image         = image;
+        imageView.contentMode   = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
+        
+        CGFloat imageW     = image.size.width;
+        CGFloat imageH     = image.size.height;
+        CGFloat imageViewW = SCREEN_W;
+        CGFloat imageViewH = (imageH / imageW) * SCREEN_W;
+        
+        if (imageViewH > SCREEN_H) {
+            imageView.frame = CGRectMake(0.0f, 0.0f, imageViewW, imageViewH);
+        } else {
+            imageView.frame = CGRectMake(0.0f, (SCREEN_H - imageViewH) / 2, imageViewW, imageViewH);
+        }
+        
+        [self.view addSubview:imageView];
+        [self.view setBackgroundColor:[UIColor clearColor]];
+        
+        [UIView animateWithDuration:0.25f
+                         animations:^{
+                             imageView.frame = [self thumbnailRectAtIndex:self.viewModel.index];
+                         } completion:^(BOOL finished) {
+                             [self dismissViewControllerAnimated:NO completion:nil];
+                         }];
     } else {
-        tempThumbnail.frame = CGRectMake(0.0f, (SCREEN_H - tempThumbnailH) / 2, tempThumbnailW, tempThumbnailH);
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
-    [self.view addSubview:tempThumbnail];
-    
-    self.scrollView.hidden = YES;
-    
-    [UIView animateWithDuration:0.25f
-                     animations:^{
-                         tempThumbnail.frame = [self thumbnailRectAtIndex:self.viewModel.index];
-                     } completion:^(BOOL finished) {
-                         [self dismissViewControllerAnimated:NO completion:nil];
-                     }];
 }
 
 #pragma mark - getters and setters
