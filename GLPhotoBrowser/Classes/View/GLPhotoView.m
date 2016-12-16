@@ -70,7 +70,6 @@
                                  [strongSelf setZoomScale:strongSelf.minimumZoomScale animated:NO];
                                  
                                  // 添加手势响应
-                                 [strongSelf addGestureRecognizer:strongSelf.singleTapGestureRecognizer];
                                  [strongSelf addGestureRecognizer:strongSelf.doubleTapGestureRecognizer];
                              }];
     
@@ -91,6 +90,8 @@
             self.imageView.frame = CGRectMake(0.0f, (SCREEN_H - imageViewH) / 2, imageViewW, imageViewH);
         }
     }
+    
+    [self addGestureRecognizer:self.singleTapGestureRecognizer];
 }
 
 #pragma mark - UIScrollViewDelegate
