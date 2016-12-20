@@ -16,7 +16,7 @@
 
 @interface GLPhotoView () <UIScrollViewDelegate>
 
-@property (nonatomic, assign) CGFloat                 zoomScale;
+@property (nonatomic, assign) CGFloat                 scale;
 @property (nonatomic, strong) GLCycleView            *cycleView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
@@ -105,7 +105,7 @@
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
-    self.zoomScale = scale;
+    self.scale = scale;
 }
 
 #pragma mark - event response
@@ -120,7 +120,7 @@
     CGFloat scale;
     CGPoint center = [sender locationInView:self.imageView];
     
-    if (self.zoomScale == 0.0f || self.zoomScale == self.minimumZoomScale) {
+    if (self.scale == 0.0f || self.scale == self.minimumZoomScale) {
         scale = self.maximumZoomScale;
     } else {
         scale = self.minimumZoomScale;
