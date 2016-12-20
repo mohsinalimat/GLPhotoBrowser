@@ -812,6 +812,29 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0208EF5D7B41917C6C83A86ACCB4FD46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2B433626756832EB9DAD4C8F1A66240 /* GLPhotoBrowser.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/GLPhotoBrowser/GLPhotoBrowser-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		1009DD2B3797ABB4D9EE43DB0AB4C9E8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7FBB010ABA8A879DF583D77AF1B4190D /* KVOController.xcconfig */;
@@ -880,29 +903,6 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
-		};
-		440C0DFA79F630C1277BBE0611C326CC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2B433626756832EB9DAD4C8F1A66240 /* GLPhotoBrowser.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/GLPhotoBrowser/GLPhotoBrowser-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
 		};
 		5064943AC1025F82F34D8A2B13AFE098 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1034,6 +1034,29 @@
 			};
 			name = Debug;
 		};
+		A2A757DDA236DBA56DB6DA5F5DB20F6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2B433626756832EB9DAD4C8F1A66240 /* GLPhotoBrowser.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/GLPhotoBrowser/GLPhotoBrowser-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
 		CBC700C5C753496433F0F625C246808C /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1FC6C7C3B73B54F52381022FCA451525 /* Pods-GLPhotoBrowser_Tests.release.xcconfig */;
@@ -1052,29 +1075,6 @@
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		D185758BCCB834280944B97321B6AC56 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2B433626756832EB9DAD4C8F1A66240 /* GLPhotoBrowser.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/GLPhotoBrowser/GLPhotoBrowser-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
@@ -1150,8 +1150,8 @@
 		AAEFA591C4C36F1F30BE28EA7B88BC92 /* Build configuration list for PBXNativeTarget "GLPhotoBrowser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				440C0DFA79F630C1277BBE0611C326CC /* Debug */,
-				D185758BCCB834280944B97321B6AC56 /* Release */,
+				A2A757DDA236DBA56DB6DA5F5DB20F6C /* Debug */,
+				0208EF5D7B41917C6C83A86ACCB4FD46 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

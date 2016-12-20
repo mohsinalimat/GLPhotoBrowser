@@ -13,7 +13,7 @@
     "tag": "1.0.0"
   },
   "platforms": {
-    "ios": "7.0"
+    "ios": "8.0"
   },
   "requires_arc": true,
   "source_files": "GLPhotoBrowser/Classes/**/*.{h,m}",

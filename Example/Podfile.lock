@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  GLPhotoBrowser: eee5d2a072114dd8ba5d3b743df3f7d69aed8bf1
+  GLPhotoBrowser: f62f3b9236486e7a00f6b6b717935590ec2540e2
   KVOController: d72ace34afea42468329623b3379ab3cd1d286b6
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
